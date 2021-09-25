@@ -15,31 +15,43 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FilmesController = void 0;
 const common_1 = require("@nestjs/common");
 const create_filme_dto_1 = require("./dto/create-filme.dto");
+const update_filme_dto_1 = require("./dto/update-filme.dto");
 const filmes_service_1 = require("./filmes.service");
 let FilmesController = class FilmesController {
     constructor(filmesService) {
         this.filmesService = filmesService;
     }
-    index() {
+    async index() {
         return this.filmesService.getAll();
     }
-    create(createFilme) {
-        this.filmesService.createFilme(createFilme);
+    async create(createFilme) {
+        return this.filmesService.createFilme(createFilme);
+    }
+    async update(id, updateFilme) {
+        return this.filmesService.updateFilme(id, updateFilme);
     }
 };
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Array)
+    __metadata("design:returntype", Promise)
 ], FilmesController.prototype, "index", null);
 __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_filme_dto_1.CreateFilmeDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], FilmesController.prototype, "create", null);
+__decorate([
+    (0, common_1.Put)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, update_filme_dto_1.UpdateFilmeDto]),
+    __metadata("design:returntype", Promise)
+], FilmesController.prototype, "update", null);
 FilmesController = __decorate([
     (0, common_1.Controller)('filmes'),
     __metadata("design:paramtypes", [filmes_service_1.FilmesService])

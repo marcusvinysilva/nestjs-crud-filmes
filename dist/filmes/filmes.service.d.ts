@@ -1,9 +1,10 @@
-import { CreateFilmeDto } from './dto/create-filme.dto';
-export declare type Filme = {
-    nome: string;
-    imagem?: string;
-};
+import { Filme, Prisma } from '.prisma/client';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { UpdateFilmeDto } from './dto/update-filme.dto';
 export declare class FilmesService {
-    getAll(): Filme[];
-    createFilme(filme: CreateFilmeDto): number;
+    private prisma;
+    constructor(prisma: PrismaService);
+    getAll(): Promise<Filme[]>;
+    createFilme(data: Prisma.FilmeCreateInput): Promise<Filme>;
+    updateFilme(id: number, novoFilme: UpdateFilmeDto): Promise<Filme>;
 }
