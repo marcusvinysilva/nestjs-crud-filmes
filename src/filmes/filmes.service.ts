@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Filme, Prisma } from '.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { UpdateFilmeDto } from './dto/update-filme.dto';
 
 @Injectable()
 export class FilmesService {
@@ -15,12 +14,29 @@ export class FilmesService {
     return this.prisma.filme.create({ data });
   }
 
-  async updateFilme(id: number, novoFilme: UpdateFilmeDto): Promise<Filme> {
-    const filmeUpdate = await this.prisma.filme.update({
-      where: { id: Number(id) },
-      data: novoFilme,
-    });
+  async deleteOneFilme(where: Prisma.FilmeWhereUniqueInput): Promise<Filme> {
+    return this.prisma.filme.delete({ where });
+  }
 
-    return filmeUpdate;
+  async deleteAllFilmes() {
+    return this.prisma.filme.deleteMany();
+  }
+
+  async updateFilme(
+    filmeId: number,
+    data: Prisma.FilmeCreateInput,
+  ): Promise<Filme> {
+    return this.prisma.filme.update({
+      data,
+      where: { id: Number(filmeId) },
+    });
+  }
+
+  async getOneFilme(filmeId: number): Promise<Filme> {
+    return this.prisma.filme.findUnique({
+      where: {
+        id: filmeId,
+      },
+    });
   }
 }
